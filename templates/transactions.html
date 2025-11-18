@@ -107,10 +107,6 @@
             font-family: 'Courier New', Courier, monospace;
             font-weight: 900;
             cursor: pointer;
-            appearance: none;
-        }
-        .filter-form select {
-            min-width: 150px;
         }
         .filter-form button {
             background: #bbdefb;
@@ -125,7 +121,6 @@
             border-collapse: collapse;
             margin-top: 15px;
             font-size: 13px;
-            table-layout: fixed;
         }
         th, td {
             padding: 14px 16px;
@@ -136,42 +131,19 @@
         }
         td:nth-child(1),
         td:nth-child(3),
-        td:nth-child(4) {
-            width: 120px;
-            white-space: nowrap;
-        }
-        td:nth-child(5),
-        td:nth-child(6) {
+        td:nth-child(4),
+        td:nth-child(5) {
             width: 150px;
+            white-space: nowrap;
         }
         td:nth-child(2) {
             width: auto;
         }
-        thead th {
+        th {
             background: #000;
             color: #fff;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-        td:nth-child(1) {
-            width: 120px;
-        }
-        td:nth-child(2) {
-            width: 130px;
-            white-space: nowrap;
-        }
-        td:nth-child(3) {
-            min-width: 380px;
-        }
-        td:nth-child(4) {
-            width: 140px;
-        }
-        td:nth-child(5) {
-            width: 140px;
-            white-space: nowrap;
-        }
-        td:nth-child(6) {
-            width: 150px;
+            font-weight: 900;
+            text-transform: uppercase;
         }
         .amount-pos {
             color: #2d5f3f;
@@ -198,7 +170,6 @@
             border: 3px solid #000;
             font-family: 'Courier New', Courier, monospace;
             font-weight: 900;
-            appearance: none;
         }
         .category-form button {
             padding: 8px 10px;
@@ -206,7 +177,6 @@
             background: #bbdefb;
             cursor: pointer;
             font-weight: 900;
-            text-transform: uppercase;
         }
         .category-form button:hover {
             background: #90caf9;

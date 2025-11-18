@@ -1,0 +1,6 @@
+{% set active_page = active_page or '' %}
+<nav class="main-nav">
+    <a href="{{ url_for('dashboard') }}" class="{% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
+    <a href="{{ url_for('transactions_view') }}" class="{% if active_page == 'transactions' %}active{% endif %}">Transakcije</a>
+    <a href="{{ url_for('categories_view') }}" class="{% if active_page == 'categories' %}active{% endif %}">Kategorije</a>
+</nav>

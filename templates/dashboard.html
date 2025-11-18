@@ -83,7 +83,7 @@
             font-weight: 900;
             border-radius: 8px;
         }
-        .summary-item > span {
+        .summary-item span {
             display: block;
             font-size: 26px;
             margin-top: 8px;
@@ -91,38 +91,36 @@
         .summary-item .top-line {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            font-size: 18px;
-            margin-bottom: 6px;
-        }
-        .summary-item .amount-large {
-            font-size: 28px;
-            font-weight: 900;
+            align-items: center;
+            font-size: 14px;
             letter-spacing: 1px;
-            display: inline-block;
+            margin-bottom: 6px;
+            width: 100%;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+        .summary-item .top-line .label {
+            font-size: 14px;
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .summary-item .badge {
-            padding: 4px 10px;
+            padding: 2px 10px;
             border: 3px solid #000;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 900;
-            background: #ffecb3;
+            background: #b86f1f;
+            color: #fffef7;
+            border-radius: 6px;
         }
-        .summary-income {
-            background: #c8e6c9;
-        }
-        .summary-expense {
-            background: #ffcdd2;
-        }
-        .summary-net {
-            background: #bbdefb;
-        }
-        .summary-count {
-            background: #fff4c3;
-        }
-        .summary-uncat {
-            background: #f7d8ae;
-        }
+        .summary-income { background: #c8e6c9; }
+        .summary-expense { background: #ffcdd2; }
+        .summary-net { background: #bbdefb; }
+        .summary-count { background: #fff4c3; }
+        .summary-uncat { background: #f7d8ae; }
         .flex {
             display: flex;
             gap: 25px;
@@ -169,6 +167,67 @@
             border: 3px solid #000;
             background: #fafafa;
         }
+        .month-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .month-panel {
+            border: 3px solid #000;
+            border-radius: 12px;
+            background: #fff;
+        }
+        .month-panel summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .month-panel summary::-webkit-details-marker {
+            display: none;
+        }
+        .month-label {
+            font-size: 16px;
+        }
+        .month-metrics {
+            display: flex;
+            gap: 18px;
+            font-size: 14px;
+        }
+        .month-metrics span {
+            min-width: 120px;
+            display: inline-block;
+        }
+        .month-income { color: #2d5f3f; }
+        .month-expense { color: #7f2c2c; }
+        .month-net { color: #000; }
+        .month-details {
+            padding: 0 20px 20px;
+        }
+        .month-table th, .month-table td {
+            border-color: #000;
+        }
+        .month-table td:nth-child(1),
+        .month-table td:nth-child(3),
+        .month-table td:nth-child(4) {
+            white-space: nowrap;
+            width: 120px;
+        }
+        .month-table td:nth-child(2) {
+            width: auto;
+            white-space: normal;
+        }
+        .empty-note {
+            margin: 10px 0;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -197,10 +256,10 @@
             </div>
             <div class="summary-item summary-uncat">
                 <div class="top-line">
-                    <span>NEKATEGORIZIRANE</span>
+                    <span class="label">NEKATEGORIZIRANE</span>
                     <span class="badge">{{ uncategorized_count }}</span>
                 </div>
-                <span class="amount-large">{{ "%.2f"|format(uncategorized_total) }} €</span>
+                <span>{{ "%.2f"|format(uncategorized_total) }} €</span>
             </div>
         </div>
     </div>
@@ -221,70 +280,55 @@
         </div>
     </div>
 
-    <div class="flex">
-        <div class="card">
-            <h2>Mesečni povzetek (EUR)</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>Leto</th>
-                    <th>Mesec</th>
-                    <th>Prihodki</th>
-                    <th>Odhodki</th>
-                    <th>Ostalo</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for row in summary_rows %}
-                    <tr>
-                        <td>{{ row["Year"] }}</td>
-                        <td>{{ "%02d"|format(row["Month"]) }}</td>
-                        <td class="amount-pos">{{ "%.2f"|format(row["Income"]) }}</td>
-                        <td class="amount-neg">{{ "%.2f"|format(row["Expense"]) }}</td>
-                        {% if row["Net"] >= 0 %}
-                            <td class="amount-pos">{{ "%.2f"|format(row["Net"]) }}</td>
+    <div class="card monthly-card">
+        <h2>Mesečni povzetek</h2>
+        <div class="month-accordion">
+            {% for row in summary_rows %}
+                {% set month_key = "%d-%02d"|format(row["Year"], row["Month"]) %}
+                <details class="month-panel">
+                    <summary>
+                        <span class="month-label">{{ row["MonthName"]|title }} {{ row["Year"] }}</span>
+                        <span class="month-metrics">
+                            <span class="month-income">{{ "%.2f"|format(row["Income"]) }} €</span>
+                            <span class="month-expense">-{{ "%.2f"|format(row["Expense"]) }} €</span>
+                            <span class="month-net">{{ "%.2f"|format(row["Net"]) }} €</span>
+                        </span>
+                    </summary>
+                    <div class="month-details">
+                        {% set month_tx = monthly_transactions.get(month_key, []) %}
+                        {% if month_tx %}
+                            <table class="month-table">
+                                <thead>
+                                <tr>
+                                    <th>Datum</th>
+                                    <th>Opis</th>
+                                    <th>Znesek</th>
+                                    <th>Stanje</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for tx in month_tx %}
+                                    <tr>
+                                        <td>{{ tx.date }}</td>
+                                        <td>{{ tx.description }}</td>
+                                        {% if tx.amount >= 0 %}
+                                            <td class="amount-pos">{{ "%.2f"|format(tx.amount) }}</td>
+                                        {% else %}
+                                            <td class="amount-neg">{{ "%.2f"|format(tx.amount) }}</td>
+                                        {% endif %}
+                                        <td>{{ "%.2f"|format(tx.balance) }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         {% else %}
-                            <td class="amount-neg">{{ "%.2f"|format(row["Net"]) }}</td>
+                            <p class="empty-note">Ni transakcij za ta mesec.</p>
                         {% endif %}
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5">Ni podatkov.</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="card">
-            <h2>Zadnjih 20 transakcij</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>Datum</th>
-                    <th>Opis</th>
-                    <th>Znesek</th>
-                    <th>Stanje</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for tx in last_tx %}
-                    <tr>
-                        <td>{{ tx.Date }}</td>
-                        <td>{{ tx.Description }}</td>
-                        {% if tx.Amount >= 0 %}
-                            <td class="amount-pos">{{ "%.2f"|format(tx.Amount) }}</td>
-                        {% else %}
-                            <td class="amount-neg">{{ "%.2f"|format(tx.Amount) }}</td>
-                        {% endif %}
-                        <td>{{ "%.2f"|format(tx.Balance) }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4">Ni transakcij.</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </div>
+                </details>
+            {% else %}
+                <p class="empty-note">Ni podatkov.</p>
+            {% endfor %}
         </div>
     </div>
 </div>

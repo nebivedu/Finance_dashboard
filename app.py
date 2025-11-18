@@ -1,10 +1,26 @@
 from flask import Flask, render_template, redirect, request, url_for
 import sqlite3
 import os
+from collections import defaultdict
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "finance.db")
 CATEGORY_DB_PATH = os.path.join(BASE_DIR, "categories.db")
+MONTH_NAMES = [
+    "",
+    "januar",
+    "februar",
+    "marec",
+    "april",
+    "maj",
+    "junij",
+    "julij",
+    "avgust",
+    "september",
+    "oktober",
+    "november",
+    "december",
+]
 
 app = Flask(__name__)
 
@@ -94,27 +110,42 @@ def dashboard():
         income_val = row["Income"] or 0
         expense_val = row["Expense"] or 0
         net_val = income_val - expense_val
+        month_name = MONTH_NAMES[row["Month"]] if 0 < row["Month"] < len(MONTH_NAMES) else str(row["Month"])
         monthly_summary.append(
             {
                 "Year": row["Year"],
                 "Month": row["Month"],
+                "MonthName": month_name,
                 "Income": income_val,
                 "Expense": expense_val,
                 "Net": net_val,
             }
         )
-        labels.append(f"{row['Year']}-{str(row['Month']).zfill(2)}")
+        labels.append(f"{month_name.capitalize()} {row['Year']}")
         income_data.append(income_val)
         expense_data.append(expense_val)
 
-    # 2) zadnjih 20 transakcij (za pregled)
-    last_tx_query = """
-        SELECT Date, Description, Amount, Balance
+    # 2) transakcije po mesecih (za razširitev na dashboardu)
+    details_rows = conn.execute(
+        """
+        SELECT Year, Month, Date, Description, Amount, Balance
         FROM transactions
         ORDER BY DateISO DESC, TransactionID DESC
-        LIMIT 20;
-    """
-    last_tx_rows = conn.execute(last_tx_query).fetchall()
+        """
+    ).fetchall()
+    monthly_transactions = defaultdict(list)
+    for tx in details_rows:
+        key = f"{tx['Year']}-{str(tx['Month']).zfill(2)}"
+        monthly_transactions[key].append(
+            {
+                "date": tx["Date"],
+                "description": tx["Description"],
+                "amount": tx["Amount"] or 0,
+                "balance": tx["Balance"] or 0,
+            }
+        )
+
+    monthly_transactions = dict(monthly_transactions)
 
     # 3) skupni statistiki
     total_stats_query = """
@@ -165,20 +196,6 @@ def dashboard():
     conn.execute("DETACH DATABASE categories_db")
     conn.close()
 
-    processed_last_tx = []
-    for tx in last_tx_rows:
-        amount = tx["Amount"] if tx["Amount"] is not None else 0
-        balance = tx["Balance"] if tx["Balance"] is not None else 0
-        processed_last_tx.append(
-            {
-                "Date": tx["Date"],
-                "Description": tx["Description"],
-                "Amount": amount,
-                "Balance": balance,
-                "IsPositive": amount >= 0,
-            }
-        )
-
     # pripravimo podatke za pie chart (izdatki po kategorijah)
     spending_categories = [row["category"] for row in category_spending]
     spending_amounts = [row["total"] for row in category_spending]
@@ -193,7 +210,6 @@ def dashboard():
         income_data=income_data,
         expense_data=expense_data,
         summary_rows=monthly_summary,
-        last_tx=processed_last_tx,
         total_income=total_stats["TotalIncome"] or 0,
         total_expense=total_stats["TotalExpense"] or 0,
         total_transactions=total_stats["TotalTransactions"] or 0,
@@ -204,6 +220,7 @@ def dashboard():
         income_amounts=income_amounts,
         uncategorized_count=uncategorized["count"] or 0,
         uncategorized_total=uncategorized["total"] or 0,
+        monthly_transactions=monthly_transactions,
     )
 
 
@@ -319,7 +336,10 @@ def transactions_view():
         ).fetchall()
     ]
     month_options = [
-        row["Month"]
+        {
+            "value": row["Month"],
+            "name": MONTH_NAMES[row["Month"]] if 0 < row["Month"] < len(MONTH_NAMES) else str(row["Month"]),
+        }
         for row in finance_conn.execute(
             "SELECT DISTINCT Month FROM transactions ORDER BY Month"
         ).fetchall()

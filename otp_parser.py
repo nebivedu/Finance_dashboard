@@ -36,7 +36,7 @@ START_BALANCE_PATTERN = re.compile(
     r"(-?\d{1,3}(?:\.\d{3})*,\d{2})"
 )
 
-AMOUNT_FIELD_PATTERN = re.compile(r"\d{1,3}(?:\.\d{3})*,\d{2}")
+AMOUNT_FIELD_PATTERN = re.compile(r"-?\d{1,3}(?:\.\d{3})*,\d{2}")
 ROW_Y_TOLERANCE = 1.0
 COLUMN_SPLIT_X = 360.0
 
@@ -79,6 +79,46 @@ def determine_amount_sign_from_layout(words, txid, amount_str, balance_str):
     return None
 
 
+def parse_line_loose(line: str):
+    """Fallback parser for lines where description text appears before amount columns."""
+    loose_match = re.match(r"^(\d{2}\.\d{2}\.\d{4})\s+(\d{10})\s+(.*)$", line)
+    if not loose_match:
+        return None
+
+    rest = loose_match.group(3)
+    amount_tokens = list(AMOUNT_FIELD_PATTERN.finditer(rest))
+    if len(amount_tokens) < 2:
+        return None
+
+    amount_match = amount_tokens[0]
+    balance_match = amount_tokens[-1]
+
+    header_text = rest[:amount_match.start()].strip()
+    trailing_desc = rest[balance_match.end():].strip()
+
+    account = "UNKNOWN"
+    desc_prefix = ""
+    if header_text:
+        parts = header_text.split()
+        if parts:
+            account = parts[0]
+            desc_prefix = " ".join(parts[1:]).strip()
+
+    amount_str = amount_match.group()
+    balance_str = balance_match.group()
+    combined_desc = " ".join(filter(None, [desc_prefix, trailing_desc])).strip()
+
+    return (
+        loose_match.group(1),
+        loose_match.group(2),
+        account,
+        amount_str,
+        "",
+        balance_str,
+        combined_desc,
+    )
+
+
 def parse_single_pdf(path: str) -> pd.DataFrame:
     """Prebere en OTP PDF izpisek in vrne DataFrame z vsemi transakcijami."""
     rows = []
@@ -115,11 +155,25 @@ def parse_single_pdf(path: str) -> pd.DataFrame:
             while idx < len(lines):
                 line = lines[idx]
                 m = TX_PATTERN.match(line)
+                fallback = None
                 if not m:
+                    fallback = parse_line_loose(line)
+                if not m and not fallback:
                     idx += 1
                     continue
 
-                date, txid, account, dobro_str, breme_str, balance_str, desc = m.groups()
+                if fallback:
+                    (
+                        date,
+                        txid,
+                        account,
+                        dobro_str,
+                        breme_str,
+                        balance_str,
+                        desc,
+                    ) = fallback
+                else:
+                    date, txid, account, dobro_str, breme_str, balance_str, desc = m.groups()
                 desc = desc.strip()
 
                 # Določi znesek glede na stolpec dobro/breme
@@ -149,7 +203,7 @@ def parse_single_pdf(path: str) -> pd.DataFrame:
                     if not nxt:
                         look_ahead += 1
                         continue
-                    if TX_PATTERN.match(nxt):
+                    if TX_PATTERN.match(nxt) or parse_line_loose(nxt):
                         break
                     if any(token in lower for token in footer_tokens):
                         break
