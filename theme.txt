@@ -1,0 +1,38 @@
+ Perfect! I've successfully updated your finance app. Here's what I did:
+
+  1. OTP Parser Improvements (otp_parser.py)
+
+  Updated the parser to correctly handle dobro (credit) and breme (debit) columns:
+
+  - Modified regex pattern to capture both dobro and breme columns separately
+  - Added sign logic:
+    - Transactions in the dobro column get a + (positive) sign
+    - Transactions in the breme column get a - (negative) sign
+  - Enhanced data storage: Now stores DobroRaw, BremeRaw, AmountSign fields for complete transparency
+  - Correct amount calculation: The Amount field now correctly reflects positive values for income and negative
+  values for expenses
+
+  2. Brutalist Design Overhaul
+
+  Transformed all HTML pages with a brutalist aesthetic:
+
+  Key Design Elements:
+
+  - Monospace font: Courier New for that raw, technical feel
+  - Black & white color scheme: High contrast, no gradients or soft colors
+  - Thick borders: 5px solid black borders on all major elements, 3px on smaller ones
+  - No rounded corners: Everything is sharp and angular
+  - Bold typography: 900 weight, uppercase headings with tight letter-spacing
+  - No shadows or blur effects: Clean, flat design
+  - Blocky layouts: Simple grid and flex layouts
+  - Raw form elements: Heavy borders, monospace fonts
+  - Chart styling (dashboard): Thick lines, no curves, monospace labels
+
+  Updated Files:
+
+  - templates/dashboard.html - Dashboard with brutalist chart styling
+  - templates/transactions.html - Transaction list with brutal table design
+  - templates/categories.html - Category management with stark forms
+
+  The design now has that characteristic brutalist vibe: unapologetic, functional, and visually striking with its
+  raw, industrial aesthetic.

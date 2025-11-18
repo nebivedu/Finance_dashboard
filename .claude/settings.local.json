@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python otp_parser.py:*)",
+      "Bash(python3:*)",
+      "Bash(where:*)",
+      "Bash(dir:*)",
+      "Bash(C:UsersgasperAppDataLocalMicrosoftWindowsAppspython.exe otp_parser.py)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

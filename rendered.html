@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #0f172a;
+            color: #e5e7eb;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            margin-bottom: 0.5rem;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #111827;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.6);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #1f2937;
+            text-align: left;
+        }
+        th {
+            background: #020617;
+            position: sticky;
+            top: 0;
+        }
+        .amount-pos {
+            color: #4ade80;
+        }
+        .amount-neg {
+            color: #f97373;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 11px;
+            background: #1f2937;
+            color: #e5e7eb;
+        }
+        .flex {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .flex > .card {
+            flex: 1 1 300px;
+        }
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Finance dashboard</h1>
+    <p class="badge">Lokalni podatki iz finance.db</p>
+
+    <div class="card">
+        <h2>Mesečni pregled</h2>
+        <canvas id="monthlyChart"></canvas>
+    </div>
+
+    <div class="flex">
+        <div class="card">
+            <h2>Mesečni povzetek (EUR)</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Leto</th>
+                    <th>Mesec</th>
+                    <th>Prihodki</th>
+                    <th>Odhodki</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+                
+                
+                    <tr>
+                        <td>2024</td>
+                        <td>12</td>
+                        <td class="amount-pos">4205.88</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>01</td>
+                        <td class="amount-pos">2920.60</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>02</td>
+                        <td class="amount-pos">3225.92</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>03</td>
+                        <td class="amount-pos">3414.54</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>04</td>
+                        <td class="amount-pos">3920.50</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>05</td>
+                        <td class="amount-pos">3882.06</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>06</td>
+                        <td class="amount-pos">3749.08</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>07</td>
+                        <td class="amount-pos">4279.14</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>08</td>
+                        <td class="amount-pos">2247.00</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>09</td>
+                        <td class="amount-pos">2604.30</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                    <tr>
+                        <td>2025</td>
+                        <td>10</td>
+                        <td class="amount-pos">1726.80</td>
+                        <td class="amount-neg">0.00</td>
+                    </tr>
+                
+                
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Zadnjih 20 transakcij</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Opis</th>
+                    <th>Znesek</th>
+                    <th>Stanje</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+                
+                
+                    <tr>
+                        <td>31.10.2025</td>
+                        <td>OBRESTI DOVOLJENEGA</td>
+                        <td class="amount-pos">1.73</td>
+                        <td>-283.37</td>
+                    </tr>
+                
+                    <tr>
+                        <td>31.10.2025</td>
+                        <td>OBRESTI DOVOLJENEGA</td>
+                        <td class="amount-pos">1.73</td>
+                        <td>-283.37</td>
+                    </tr>
+                
+                    <tr>
+                        <td>30.10.2025</td>
+                        <td>MK CITY CENTER CELJE</td>
+                        <td class="amount-pos">2.40</td>
+                        <td>-255.24</td>
+                    </tr>
+                
+                    <tr>
+                        <td>30.10.2025</td>
+                        <td>MK CITY CENTER CELJE</td>
+                        <td class="amount-pos">2.40</td>
+                        <td>-255.24</td>
+                    </tr>
+                
+                    <tr>
+                        <td>29.10.2025</td>
+                        <td>JAGER TRG. BRASLOVCE</td>
+                        <td class="amount-pos">11.58</td>
+                        <td>-252.84</td>
+                    </tr>
+                
+                    <tr>
+                        <td>29.10.2025</td>
+                        <td>JAGER TRG. BRASLOVCE</td>
+                        <td class="amount-pos">11.58</td>
+                        <td>-252.84</td>
+                    </tr>
+                
+                    <tr>
+                        <td>28.10.2025</td>
+                        <td>NADOMESTILO ZA DIREKTNO</td>
+                        <td class="amount-pos">0.33</td>
+                        <td>-241.26</td>
+                    </tr>
+                
+                    <tr>
+                        <td>28.10.2025</td>
+                        <td>NADOMESTILO ZA DIREKTNO</td>
+                        <td class="amount-pos">0.33</td>
+                        <td>-241.26</td>
+                    </tr>
+                
+                    <tr>
+                        <td>28.10.2025</td>
+                        <td>1045741970498 PAYPAL</td>
+                        <td class="amount-pos">16.00</td>
+                        <td>-240.93</td>
+                    </tr>
+                
+                    <tr>
+                        <td>28.10.2025</td>
+                        <td>1045741970498 PAYPAL</td>
+                        <td class="amount-pos">16.00</td>
+                        <td>-240.93</td>
+                    </tr>
+                
+                    <tr>
+                        <td>27.10.2025</td>
+                        <td>SUPERMARKET MOZIRJE</td>
+                        <td class="amount-pos">2.22</td>
+                        <td>-224.93</td>
+                    </tr>
+                
+                    <tr>
+                        <td>27.10.2025</td>
+                        <td>SUPERMARKET MOZIRJE</td>
+                        <td class="amount-pos">2.22</td>
+                        <td>-224.93</td>
+                    </tr>
+                
+                    <tr>
+                        <td>27.10.2025</td>
+                        <td>OTP BANKA D.D. /TUS MO</td>
+                        <td class="amount-pos">50.00</td>
+                        <td>-222.71</td>
+                    </tr>
+                
+                    <tr>
+                        <td>27.10.2025</td>
+                        <td>OTP BANKA D.D. /TUS MO</td>
+                        <td class="amount-pos">50.00</td>
+                        <td>-222.71</td>
+                    </tr>
+                
+                    <tr>
+                        <td>27.10.2025</td>
+                        <td>PRENOS NA KARTICO</td>
+                        <td class="amount-pos">20.00</td>
+                        <td>-172.71</td>
+                    </tr>
+                
+                    <tr>
+                        <td>27.10.2025</td>
+                        <td>PRENOS NA KARTICO</td>
+                        <td class="amount-pos">20.00</td>
+                        <td>-172.71</td>
+                    </tr>
+                
+                    <tr>
+                        <td>25.10.2025</td>
+                        <td>MARKET NOTRANJE GORICE</td>
+                        <td class="amount-pos">8.19</td>
+                        <td>-152.71</td>
+                    </tr>
+                
+                    <tr>
+                        <td>25.10.2025</td>
+                        <td>MARKET NOTRANJE GORICE</td>
+                        <td class="amount-pos">8.19</td>
+                        <td>-152.71</td>
+                    </tr>
+                
+                    <tr>
+                        <td>24.10.2025</td>
+                        <td>SPAR MOZIRJE</td>
+                        <td class="amount-pos">6.18</td>
+                        <td>-144.52</td>
+                    </tr>
+                
+                    <tr>
+                        <td>24.10.2025</td>
+                        <td>SPAR MOZIRJE</td>
+                        <td class="amount-pos">6.18</td>
+                        <td>-144.52</td>
+                    </tr>
+                
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const labels = ["2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10"];
+    const incomeData = [4205.88, 2920.6, 3225.92, 3414.54, 3920.5, 3882.06, 3749.08, 4279.14, 2247.0, 2604.2999999999997, 1726.8];
+    const expenseData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    const chartCanvas = document.getElementById('monthlyChart');
+
+    if (chartCanvas && window.Chart) {
+        const ctx = chartCanvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Prihodki',
+                        data: incomeData,
+                        borderColor: '#4ade80',
+                        backgroundColor: 'rgba(74, 222, 128, 0.15)',
+                        borderWidth: 2,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Odhodki',
+                        data: expenseData,
+                        borderColor: '#f97373',
+                        backgroundColor: 'rgba(249, 115, 115, 0.15)',
+                        borderWidth: 2,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#e5e7eb'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#9ca3af' },
+                        grid: { color: '#1f2937' }
+                    },
+                    y: {
+                        ticks: { color: '#9ca3af' },
+                        grid: { color: '#1f2937' }
+                    }
+                }
+            }
+        });
+    } else {
+        console.warn('Chart.js missing or canvas element not found.');
+    }
+</script>
+</body>
+</html>

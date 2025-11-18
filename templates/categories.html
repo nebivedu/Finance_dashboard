@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Kategorije transakcij</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: #fffef7;
+            color: #000;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.4;
+        }
+        a {
+            color: #000;
+            text-decoration: underline;
+            font-weight: 900;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+        h2 {
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .main-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            margin-bottom: 25px;
+            border: 5px solid #000;
+        }
+        .main-nav a {
+            text-decoration: none;
+            padding: 15px 20px;
+            background: #fff;
+            border-right: 5px solid #000;
+            color: #000;
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .main-nav a:last-child {
+            border-right: none;
+        }
+        .main-nav a.active {
+            background: #000;
+            color: #fff;
+        }
+        .main-nav a:hover {
+            background: #e1bee7;
+        }
+        .main-nav a.active:hover {
+            background: #000;
+        }
+        .card {
+            background: #fff;
+            border: 5px solid #000;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        input[type="text"],
+        textarea {
+            padding: 12px 15px;
+            border: 3px solid #000;
+            background: #fff;
+            color: #000;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #000;
+            box-shadow: 0 0 0 3px #000;
+        }
+        button {
+            padding: 12px 20px;
+            border: 3px solid #000;
+            background: #bbdefb;
+            color: #000;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background: #90caf9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 10px 12px;
+            border: 3px solid #000;
+            text-align: left;
+        }
+        th {
+            background: #000;
+            color: #fff;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .message {
+            padding: 15px 20px;
+            border: 5px solid #000;
+            margin-bottom: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .message.success {
+            background: #c8e6c9;
+            color: #2d5f3f;
+        }
+        .message.error {
+            background: #ffcdd2;
+            color: #7f2c2c;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="main-nav">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('transactions_view') }}">Transakcije</a>
+        <a href="{{ url_for('categories_view') }}" class="active">Kategorije</a>
+    </nav>
+    <div class="card">
+        <h1>Manage categories</h1>
+    </div>
+
+    <div class="card">
+        <h2>Create a new category</h2>
+        {% if message %}
+            <div class="message success">{{ message }}</div>
+        {% endif %}
+        {% if error %}
+            <div class="message error">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="e.g. Groceries" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description (optional)</label>
+                <textarea id="description" name="description" rows="3"></textarea>
+            </div>
+            <button type="submit">Add category</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Existing categories</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Assigned transactions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for cat in categories %}
+                <tr>
+                    <td>{{ cat['name'] }}</td>
+                    <td>{{ cat['description'] or '—' }}</td>
+                    <td>{{ cat['assignment_count'] }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No categories created yet.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

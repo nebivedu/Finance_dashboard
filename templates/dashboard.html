@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: #fffef7;
+            color: #000;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.4;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+        h2 {
+            font-size: 30px;
+            font-weight: 900;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #fff;
+            border: 5px solid #000;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .main-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            border: 5px solid #000;
+            margin-bottom: 25px;
+        }
+        .main-nav a {
+            text-decoration: none;
+            padding: 15px 20px;
+            background: #fff;
+            border-right: 5px solid #000;
+            color: #000;
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .main-nav a:last-child {
+            border-right: none;
+        }
+        .main-nav a.active {
+            background: #000;
+            color: #fff;
+        }
+        .main-nav a:hover {
+            background: #e1bee7;
+        }
+        .summary-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .summary-item {
+            border: 3px solid #000;
+            padding: 15px 20px;
+            flex: 1 1 200px;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+        .summary-item span {
+            display: block;
+            font-size: 28px;
+            margin-top: 5px;
+        }
+        .flex {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .flex > .card {
+            flex: 1 1 350px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 10px 12px;
+            border: 3px solid #000;
+            text-align: left;
+            word-break: break-word;
+        }
+        th {
+            background: #000;
+            color: #fff;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .amount-pos {
+            color: #2d5f3f;
+            background: #c8e6c9;
+            padding: 2px 6px;
+            font-weight: 900;
+        }
+        .amount-pos::before {
+            content: '+';
+        }
+        .amount-neg {
+            color: #7f2c2c;
+            background: #ffcdd2;
+            padding: 2px 6px;
+            font-weight: 900;
+        }
+        canvas {
+            width: 100%;
+            border: 3px solid #000;
+            background: #fafafa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="main-nav">
+        <a href="{{ url_for('dashboard') }}" class="active">Dashboard</a>
+        <a href="{{ url_for('transactions_view') }}">Transakcije</a>
+        <a href="{{ url_for('categories_view') }}">Kategorije</a>
+    </nav>
+
+    <div class="card">
+        <h1>Finance dashboard</h1>
+        <div class="summary-grid">
+            <div class="summary-item">
+                Skupni prihodki
+                <span>{{ "%.2f"|format(total_income) }} €</span>
+            </div>
+            <div class="summary-item">
+                Skupni odhodki
+                <span>{{ "%.2f"|format(total_expense) }} €</span>
+            </div>
+            <div class="summary-item">
+                Neto stanje
+                <span>{{ "%.2f"|format(overall_net) }} €</span>
+            </div>
+            <div class="summary-item">
+                Transakcije
+                <span>{{ total_transactions }}</span>
+            </div>
+            <div class="summary-item">
+                Nekategorizirane
+                <span>{{ uncategorized_count }} ({{ "%.2f"|format(uncategorized_total) }} €)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Monthly cashflow</h2>
+        <canvas id="monthlyChart" height="320"></canvas>
+    </div>
+
+    <div class="flex">
+        <div class="card">
+            <h2>Spending by category</h2>
+            <canvas id="spendingPieChart" height="260"></canvas>
+        </div>
+        <div class="card">
+            <h2>Income by category</h2>
+            <canvas id="incomePieChart" height="260"></canvas>
+        </div>
+    </div>
+
+    <div class="flex">
+        <div class="card">
+            <h2>Mesečni povzetek (EUR)</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Leto</th>
+                    <th>Mesec</th>
+                    <th>Prihodki</th>
+                    <th>Odhodki</th>
+                    <th>Ostalo</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in summary_rows %}
+                    <tr>
+                        <td>{{ row["Year"] }}</td>
+                        <td>{{ "%02d"|format(row["Month"]) }}</td>
+                        <td class="amount-pos">{{ "%.2f"|format(row["Income"]) }}</td>
+                        <td class="amount-neg">{{ "%.2f"|format(row["Expense"]) }}</td>
+                        {% if row["Net"] >= 0 %}
+                            <td class="amount-pos">{{ "%.2f"|format(row["Net"]) }}</td>
+                        {% else %}
+                            <td class="amount-neg">{{ "%.2f"|format(row["Net"]) }}</td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">Ni podatkov.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card">
+            <h2>Zadnjih 20 transakcij</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Opis</th>
+                    <th>Znesek</th>
+                    <th>Stanje</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for tx in last_tx %}
+                    <tr>
+                        <td>{{ tx.Date }}</td>
+                        <td>{{ tx.Description }}</td>
+                        {% if tx.Amount >= 0 %}
+                            <td class="amount-pos">{{ "%.2f"|format(tx.Amount) }}</td>
+                        {% else %}
+                            <td class="amount-neg">{{ "%.2f"|format(tx.Amount) }}</td>
+                        {% endif %}
+                        <td>{{ "%.2f"|format(tx.Balance) }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Ni transakcij.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script id="dashboard-data" type="application/json">
+{{ {
+    "labels": labels,
+    "incomeData": income_data,
+    "expenseData": expense_data,
+    "spendingCategories": spending_categories,
+    "spendingAmounts": spending_amounts,
+    "incomeCategories": income_categories,
+    "incomeAmounts": income_amounts
+}|tojson }}
+</script>
+<script>
+    const dataElement = document.getElementById('dashboard-data');
+    let parsedData = {
+        labels: [],
+        incomeData: [],
+        expenseData: [],
+        spendingCategories: [],
+        spendingAmounts: [],
+        incomeCategories: [],
+        incomeAmounts: [],
+    };
+    if (dataElement) {
+        try {
+            parsedData = JSON.parse(dataElement.textContent || '{}');
+        } catch (err) {
+            console.error('Failed to parse dashboard data', err);
+        }
+    }
+    const {
+        labels,
+        incomeData,
+        expenseData,
+        spendingCategories,
+        spendingAmounts,
+        incomeCategories,
+        incomeAmounts,
+    } = parsedData;
+
+    const monthlyCanvas = document.getElementById('monthlyChart');
+    if (monthlyCanvas && window.Chart) {
+        const ctx = monthlyCanvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: incomeData,
+                        borderColor: '#2d5f3f',
+                        backgroundColor: 'rgba(200, 230, 201, 0.5)',
+                        borderWidth: 4,
+                        tension: 0,
+                        fill: true
+                    },
+                    {
+                        label: 'Expenses',
+                        data: expenseData,
+                        borderColor: '#7f2c2c',
+                        backgroundColor: 'rgba(255, 205, 210, 0.5)',
+                        borderWidth: 4,
+                        tension: 0,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#000',
+                            font: { family: "'Courier New', monospace", weight: 'bold' }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#000', font: { family: "'Courier New', monospace" } },
+                        grid: { color: '#ccc', lineWidth: 2 }
+                    },
+                    y: {
+                        ticks: { color: '#000', font: { family: "'Courier New', monospace" } },
+                        grid: { color: '#ccc', lineWidth: 2 }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderPie(canvasId, labels, data) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas || !window.Chart || labels.length === 0) return;
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels,
+                datasets: [{
+                    data,
+                    backgroundColor: [
+                        '#ffcdd2', '#f8bbd0', '#e1bee7', '#d1c4e9',
+                        '#c5cae9', '#bbdefb', '#b3e5fc', '#b2ebf2',
+                        '#b2dfdb', '#c8e6c9', '#dcedc8', '#f0f4c3'
+                    ],
+                    borderColor: '#000',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#000',
+                            font: { family: "'Courier New', monospace", weight: 'bold' },
+                            padding: 15
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    renderPie('spendingPieChart', spendingCategories, spendingAmounts);
+    renderPie('incomePieChart', incomeCategories, incomeAmounts);
+</script>
+</body>
+</html>
