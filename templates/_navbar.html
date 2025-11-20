@@ -3,4 +3,84 @@
     <a href="{{ url_for('dashboard') }}" class="{% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
     <a href="{{ url_for('transactions_view') }}" class="{% if active_page == 'transactions' %}active{% endif %}">Transakcije</a>
     <a href="{{ url_for('categories_view') }}" class="{% if active_page == 'categories' %}active{% endif %}">Kategorije</a>
+    <button type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Preklopi temo"
+            aria-pressed="false">
+        <span class="icon icon-sun" aria-hidden="true"></span>
+        <span class="icon icon-moon" aria-hidden="true"></span>
+    </button>
 </nav>
+<script>
+    (function () {
+        if (window.financeThemeToggleInitialized) {
+            return;
+        }
+        window.financeThemeToggleInitialized = true;
+        const storageKey = 'finance-theme';
+        const body = document.body;
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+        const toggle = document.getElementById('themeToggle');
+
+        function getStoredTheme() {
+            try {
+                return localStorage.getItem(storageKey);
+            } catch (err) {
+                console.warn('Unable to access localStorage for theme', err);
+                return null;
+            }
+        }
+
+        function setStoredTheme(value) {
+            try {
+                localStorage.setItem(storageKey, value);
+            } catch (err) {
+                console.warn('Unable to store theme preference', err);
+            }
+        }
+
+        function applyTheme(theme, skipDispatch) {
+            const isDark = theme === 'dark';
+            body.classList.toggle('dark-mode', isDark);
+            if (toggle) {
+                toggle.setAttribute('aria-pressed', String(isDark));
+            }
+            if (!skipDispatch) {
+                window.dispatchEvent(new CustomEvent('themechange', {
+                    detail: { theme: isDark ? 'dark' : 'light' }
+                }));
+            }
+        }
+
+        function setTheme(theme) {
+            setStoredTheme(theme);
+            applyTheme(theme);
+        }
+
+        const storedTheme = getStoredTheme();
+        const initialTheme = storedTheme || (prefersDark && prefersDark.matches ? 'dark' : 'light');
+        applyTheme(initialTheme, true);
+
+        if (toggle) {
+            toggle.addEventListener('click', function () {
+                const nextTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+                setTheme(nextTheme);
+            });
+        }
+
+        if (prefersDark && typeof prefersDark.addEventListener === 'function') {
+            prefersDark.addEventListener('change', function (event) {
+                if (!getStoredTheme()) {
+                    applyTheme(event.matches ? 'dark' : 'light');
+                }
+            });
+        } else if (prefersDark && typeof prefersDark.addListener === 'function') {
+            prefersDark.addListener(function (event) {
+                if (!getStoredTheme()) {
+                    applyTheme(event.matches ? 'dark' : 'light');
+                }
+            });
+        }
+    })();
+</script>

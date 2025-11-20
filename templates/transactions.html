@@ -7,18 +7,96 @@
         * {
             box-sizing: border-box;
         }
+        :root {
+            --body-bg: #fffef7;
+            --text-color: #12131c;
+            --border-color: #141c2f;
+            --card-bg: #ffffff;
+            --nav-bg: #fffef7;
+            --nav-link-bg: #ffffff;
+            --nav-link-color: #141c2f;
+            --nav-link-active-bg: #141c2f;
+            --nav-link-active-color: #fffef7;
+            --nav-link-hover-bg: #e6ecff;
+            --button-bg: #dbe3ff;
+            --button-hover-bg: #c3d2ff;
+            --muted-surface: #f7f8fb;
+            --table-head-bg: #141c2f;
+            --table-head-color: #fffef7;
+            --grid-line-color: #c5ccd9;
+            --toggle-bg: #ffffff;
+            --toggle-color: #141c2f;
+            --toggle-hover-bg: #e6ecff;
+            --card-shadow: rgba(4, 11, 38, 0.08);
+            --link-color: #0b3173;
+            --summary-income-bg: #cfe8d3;
+            --summary-income-color: #183a28;
+            --summary-expense-bg: #ffd6da;
+            --summary-expense-color: #5a2024;
+            --summary-count-bg: #fff0c8;
+            --summary-count-color: #453009;
+            --badge-bg: #b86f1f;
+            --badge-color: #fffef7;
+            --amount-pos-bg: #cfe8d3;
+            --amount-pos-color: #1b4a33;
+            --amount-neg-bg: #ffd6da;
+            --amount-neg-color: #64232a;
+            --input-bg: #ffffff;
+            --input-border: #141c2f;
+            --icon-sun: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%208%208'%20shape-rendering%3D'crispEdges'%3E%3Crect%20width%3D'8'%20height%3D'8'%20fill%3D'none'%2F%3E%3Crect%20x%3D'3'%20y%3D'0'%20width%3D'2'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'2'%20y%3D'1'%20width%3D'4'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'1'%20y%3D'2'%20width%3D'6'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'1'%20y%3D'3'%20width%3D'6'%20height%3D'2'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'1'%20y%3D'5'%20width%3D'6'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'2'%20y%3D'6'%20width%3D'4'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'3'%20y%3D'7'%20width%3D'2'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'0'%20y%3D'3'%20width%3D'1'%20height%3D'2'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'7'%20y%3D'3'%20width%3D'1'%20height%3D'2'%20fill%3D'%23f9e784'%2F%3E%3C%2Fsvg%3E");
+            --icon-moon: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2010%2010'%20shape-rendering%3D'crispEdges'%3E%3Crect%20width%3D'10'%20height%3D'10'%20fill%3D'none'%2F%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'6'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'1'%20y%3D'2'%20width%3D'7'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'1'%20y%3D'3'%20width%3D'7'%20height%3D'2'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'1'%20y%3D'5'%20width%3D'7'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'2'%20y%3D'6'%20width%3D'6'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'3'%20y%3D'7'%20width%3D'5'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'4'%20y%3D'8'%20width%3D'3'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'2'%20y%3D'3'%20width%3D'2'%20height%3D'1'%20fill%3D'%23c4c8e8'%2F%3E%3Crect%20x%3D'3'%20y%3D'5'%20width%3D'2'%20height%3D'1'%20fill%3D'%23c4c8e8'%2F%3E%3Crect%20x%3D'4'%20y%3D'2'%20width%3D'1'%20height%3D'1'%20fill%3D'%23c4c8e8'%2F%3E%3Crect%20x%3D'5'%20y%3D'1'%20width%3D'4'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'6'%20y%3D'2'%20width%3D'3'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'7'%20y%3D'3'%20width%3D'2'%20height%3D'3'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'6'%20y%3D'6'%20width%3D'3'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'5'%20y%3D'7'%20width%3D'4'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'4'%20y%3D'8'%20width%3D'4'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3C%2Fsvg%3E");
+        }
+        body.dark-mode {
+            --body-bg: #04070f;
+            --text-color: #f7f6ef;
+            --border-color: #f1ecda;
+            --card-bg: #101726;
+            --nav-bg: #07090f;
+            --nav-link-bg: #0d1118;
+            --nav-link-color: #f7f6ef;
+            --nav-link-active-bg: #f7f6ef;
+            --nav-link-active-color: #11131f;
+            --nav-link-hover-bg: #1a1f2b;
+            --button-bg: #1e3973;
+            --button-hover-bg: #2a4da0;
+            --muted-surface: #0d1424;
+            --table-head-bg: #f7f6ef;
+            --table-head-color: #07090f;
+            --grid-line-color: #3d4a67;
+            --toggle-bg: #0d1118;
+            --toggle-color: #f7f6ef;
+            --toggle-hover-bg: #232a3a;
+            --card-shadow: rgba(0, 0, 0, 0.65);
+            --link-color: #9cc4ff;
+            --summary-income-bg: #0f2a20;
+            --summary-income-color: #b4f7c6;
+            --summary-expense-bg: #3b151b;
+            --summary-expense-color: #ffb4bd;
+            --summary-count-bg: #382c0b;
+            --summary-count-color: #ffe6a7;
+            --badge-bg: #f0b562;
+            --badge-color: #402406;
+            --amount-pos-bg: #0f2a20;
+            --amount-pos-color: #b4f7c6;
+            --amount-neg-bg: #3b151b;
+            --amount-neg-color: #ffb4bd;
+            --input-bg: #0c1322;
+            --input-border: #f1ecda;
+        }
         body {
             font-family: 'Courier New', Courier, monospace;
-            background: #fffef7;
-            color: #000;
+            background: var(--body-bg);
+            color: var(--text-color);
             margin: 0;
             padding: 30px 20px 40px;
             line-height: 1.4;
         }
         a {
-            color: #000;
+            color: var(--link-color);
             text-decoration: underline;
             font-weight: 900;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
         }
         h1 {
             font-size: 48px;
@@ -50,45 +128,115 @@
             z-index: 100;
             display: flex;
             flex-wrap: wrap;
+            align-items: stretch;
             gap: 0;
             margin-bottom: 35px;
-            border: 5px solid #000;
-            background: #fffef7;
+            border: 5px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--nav-bg);
+            box-shadow: 0 12px 28px var(--card-shadow);
         }
         .main-nav a {
             text-decoration: none;
             padding: 15px 20px;
-            background: #fff;
-            border-right: 5px solid #000;
-            color: #000;
+            background: var(--nav-link-bg);
+            border-right: 5px solid var(--border-color);
+            color: var(--nav-link-color);
             font-size: 16px;
             font-weight: 900;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
-        .main-nav a:last-child {
+        .main-nav a:last-of-type {
             border-right: none;
         }
         .main-nav a.active {
-            background: #000;
-            color: #fff;
+            background: var(--nav-link-active-bg);
+            color: var(--nav-link-active-color);
         }
         .main-nav a:hover {
-            background: #e1bee7;
+            background: var(--nav-link-hover-bg);
+            color: var(--nav-link-color);
         }
         .main-nav a.active:hover {
-            background: #000;
+            background: var(--nav-link-active-bg);
+            color: var(--nav-link-active-color);
+        }
+        .main-nav .theme-toggle {
+            margin-left: auto;
+            border: none;
+            border-left: 5px solid var(--border-color);
+            background: var(--toggle-bg);
+            color: var(--toggle-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 58px;
+            min-width: 58px;
+            aspect-ratio: 1 / 1;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: background-color 0.2s ease;
+        }
+        .main-nav .theme-toggle:hover {
+            background: var(--toggle-hover-bg);
+        }
+        .main-nav .theme-toggle:focus-visible {
+            outline: 3px dashed var(--nav-link-active-color);
+            outline-offset: -6px;
+        }
+        .theme-toggle .icon {
+            font-size: 0;
+            line-height: 1;
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle .icon::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background-size: cover;
+            image-rendering: pixelated;
+            display: block;
+        }
+        .theme-toggle .icon-sun::before {
+            background-image: var(--icon-sun);
+        }
+        .theme-toggle .icon-moon::before {
+            background-image: var(--icon-moon);
+        }
+        .theme-toggle .icon-moon {
+            display: none;
+        }
+        body.dark-mode .theme-toggle .icon-sun {
+            display: none;
+        }
+        body.dark-mode .theme-toggle .icon-moon {
+            display: inline;
         }
         .card {
-            background: #fff;
-            border: 5px solid #000;
+            background: var(--card-bg);
+            border: 5px solid var(--border-color);
             padding: 25px;
             margin-bottom: 25px;
+            color: inherit;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px var(--card-shadow);
         }
         .filter-form {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-            align-items: flex-end;
+            align-items: center;
         }
         .filter-form label {
             display: flex;
@@ -99,22 +247,68 @@
         }
         .filter-form select,
         .filter-form button {
-            margin-top: 8px;
-            padding: 10px 15px;
-            border: 3px solid #000;
-            background: #fff;
-            color: #000;
+            height: 48px;
+            padding: 0 15px;
+            border: 3px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-color);
             font-family: 'Courier New', Courier, monospace;
             font-weight: 900;
             cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
         .filter-form button {
-            background: #bbdefb;
-            color: #000;
+            background: var(--button-bg);
+            color: var(--text-color);
             text-transform: uppercase;
+            border-color: var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .filter-form .pill-toggle {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0;
+            padding: 0 14px;
+            height: 48px;
+            border: 3px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--muted-surface);
+            font-weight: 900;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            align-self: center;
+        }
+        .toggle-label {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            min-width: 190px;
+        }
+        .filter-form .pill-toggle input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+        }
+        .filter-form .pill-toggle span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
         }
         .filter-form button:hover {
-            background: #90caf9;
+            background: var(--button-hover-bg);
+        }
+        .filter-form select:focus,
+        .filter-form button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--toggle-hover-bg);
         }
         table {
             width: 100%;
@@ -124,10 +318,13 @@
         }
         th, td {
             padding: 14px 16px;
-            border: 3px solid #000;
+            border: 3px solid var(--border-color);
             text-align: left;
             word-wrap: break-word;
             word-break: break-word;
+            color: inherit;
+            background: var(--card-bg);
+            transition: background-color 0.2s ease;
         }
         td:nth-child(1),
         td:nth-child(3),
@@ -140,14 +337,21 @@
             width: auto;
         }
         th {
-            background: #000;
-            color: #fff;
+            background: var(--table-head-bg);
+            color: var(--table-head-color);
             font-weight: 900;
             text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        tbody tr:nth-child(even) td {
+            background: var(--muted-surface);
+        }
+        tbody tr:hover td {
+            background: var(--toggle-hover-bg);
         }
         .amount-pos {
-            color: #2d5f3f;
-            background: #c8e6c9;
+            color: var(--amount-pos-color);
+            background: var(--amount-pos-bg);
             padding: 2px 6px;
             font-weight: 900;
         }
@@ -155,8 +359,8 @@
             content: '+';
         }
         .amount-neg {
-            color: #7f2c2c;
-            background: #ffcdd2;
+            color: var(--amount-neg-color);
+            background: var(--amount-neg-bg);
             padding: 2px 6px;
             font-weight: 900;
         }
@@ -167,19 +371,30 @@
         }
         .category-form select {
             padding: 6px 8px;
-            border: 3px solid #000;
+            border: 3px solid var(--input-border);
             font-family: 'Courier New', Courier, monospace;
             font-weight: 900;
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 8px;
         }
         .category-form button {
             padding: 8px 10px;
-            border: 3px solid #000;
-            background: #bbdefb;
+            border: 3px solid var(--border-color);
+            background: var(--button-bg);
             cursor: pointer;
             font-weight: 900;
+            color: var(--text-color);
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
         }
         .category-form button:hover {
-            background: #90caf9;
+            background: var(--button-hover-bg);
+        }
+        .category-form select:focus,
+        .category-form button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--toggle-hover-bg);
         }
         .summary-grid {
             display: grid;
@@ -187,9 +402,12 @@
             gap: 15px;
         }
         .summary-item {
-            border: 3px solid #000;
+            border: 3px solid var(--border-color);
             padding: 15px;
-            background: #fafafa;
+            background: var(--muted-surface);
+            color: var(--text-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px var(--card-shadow);
         }
         .summary-item h3 {
             margin: 0 0 10px 0;
@@ -211,6 +429,161 @@
         .reset-link {
             font-size: 14px;
         }
+        .smart-card {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .smart-card__content h2 {
+            margin: 0 0 6px 0;
+        }
+        .smart-card__content p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .smart-card form button {
+            margin-left: auto;
+        }
+        .meta-chip {
+            display: inline-block;
+            padding: 3px 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 900;
+            background: var(--muted-surface);
+        }
+        .category-chip {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 10px;
+            background: var(--button-bg);
+            border: 2px solid var(--border-color);
+            font-weight: 900;
+        }
+        .category-chip--empty {
+            background: var(--summary-count-bg);
+            color: var(--summary-count-color);
+        }
+        .suggested-pill {
+            margin-top: 6px;
+            display: inline-block;
+            padding: 4px 10px;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 900;
+        }
+        .bulk-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 4px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+        .bulk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .bulk-grid label {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-weight: 900;
+        }
+        .bulk-form input[type="text"] {
+            padding: 10px 12px;
+            border: 3px solid var(--input-border);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 900;
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            width: 100%;
+            height: 44px;
+            box-sizing: border-box;
+        }
+        .bulk-form select {
+            padding: 0 12px;
+            border: 3px solid var(--input-border);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 900;
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            width: 100%;
+            height: 44px;
+            box-sizing: border-box;
+        }
+        .bulk-form .actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .checkbox-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--muted-surface);
+            font-size: 13px;
+            font-weight: 900;
+        }
+        .checkbox-pill input {
+            width: 16px;
+            height: 16px;
+        }
+        .row-meta {
+            margin-top: 4px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .filters-inline {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+        .filters-inline label {
+            min-width: 190px;
+        }
+        .filters-inline label select {
+            height: 48px;
+        }
+        .pill-toggle {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            border: 3px solid var(--border-color);
+            padding: 0 14px;
+            border-radius: 12px;
+            background: var(--muted-surface);
+            font-weight: 900;
+            height: 48px;
+            box-sizing: border-box;
+            white-space: nowrap;
+            flex: 0 0 auto;
+        }
+        .pill-toggle input {
+            width: 18px;
+            height: 18px;
+        }
+        .pill-toggle span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+        }
     </style>
 </head>
 <body>
@@ -223,26 +596,36 @@
     </div>
 
     <form method="get" class="card filter-form">
-        <label>
-            Year
-            <select name="year">
-                <option value="">All years</option>
-                {% for year in year_options %}
-                    <option value="{{ year }}" {% if selected_year and selected_year|int == year %}selected{% endif %}>{{ year }}</option>
-                {% endfor %}
-            </select>
-        </label>
-        <label>
-            Month
-            <select name="month">
-                <option value="">All months</option>
-                {% for month in month_options %}
-                    <option value="{{ month.value }}" {% if selected_month and selected_month|int == month.value %}selected{% endif %}>
+        <div class="filters-inline">
+            <input type="hidden" name="unassigned_only" value="0">
+            <label>
+                Year
+                <select name="year">
+                    <option value="">All years</option>
+                    {% for year in year_options %}
+                        <option value="{{ year }}" {% if selected_year and selected_year|int == year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                Month
+                <select name="month">
+                    <option value="">All months</option>
+                    {% for month in month_options %}
+                        <option value="{{ month.value }}" {% if selected_month and selected_month|int == month.value %}selected{% endif %}>
                         {{ month.name|title }}
                     </option>
                 {% endfor %}
             </select>
-        </label>
+            </label>
+            <label class="toggle-label">
+                <span>Samo nekategorizirane</span>
+                <span class="pill-toggle">
+                    <input type="checkbox" name="unassigned_only" value="1" {% if unassigned_only != '0' %}checked{% endif %}>
+                    <span>Da</span>
+                </span>
+            </label>
+        </div>
         <button type="submit">Apply filters</button>
     </form>
 
@@ -261,6 +644,55 @@
         </div>
     </div>
 
+    {% if suggested_in_view %}
+    <div class="card smart-card">
+        <div class="smart-card__content">
+            <h2>Predlagane kategorije</h2>
+            <p>{{ suggested_in_view }} transakcij v trenutnem pogledu ima predlog na osnovi podobnega opisa. Gumb spodaj uporabi
+                vse razpoložljive predloge (tudi izven filtra, skupaj {{ suggested_total }} predlogov).</p>
+        </div>
+        <form method="post">
+            <input type="hidden" name="bulk_action" value="apply_suggestions">
+            <input type="hidden" name="filter_year" value="{{ selected_year }}">
+            <input type="hidden" name="filter_month" value="{{ selected_month }}">
+            <input type="hidden" name="unassigned_only" value="{{ unassigned_only }}">
+            <button type="submit">Uporabi predloge</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <form method="post" class="card bulk-form">
+        <h2>Masovna dodelitev po ključni besedi</h2>
+        <div class="bulk-grid">
+            <label>
+                Opis vsebuje
+                <input type="text" name="description_keyword" placeholder="npr. mercator" list="keyword-options" required>
+                <datalist id="keyword-options">
+                    {% for kw in keyword_options %}
+                        <option value="{{ kw.value }}">{{ kw.label }}</option>
+                    {% endfor %}
+                </datalist>
+            </label>
+            <label>
+                Kategorija
+                <select name="category_id" required>
+                    <option value="">-- Izberi --</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat['id'] }}">{{ cat['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div class="actions">
+            <input type="hidden" name="bulk_action" value="keyword">
+            <input type="hidden" name="filter_year" value="{{ selected_year }}">
+            <input type="hidden" name="filter_month" value="{{ selected_month }}">
+            <input type="hidden" name="unassigned_only" value="{{ unassigned_only }}">
+            <button type="submit">Dodeli kategorijo vsem zadetkom</button>
+            <span class="meta-chip">Neobčutljivo na velike/male črke</span>
+        </div>
+    </form>
+
     <div class="card">
         <h2>Transactions</h2>
         <table>
@@ -278,27 +710,56 @@
             {% for tx in transactions %}
                 <tr>
                     <td>{{ tx.date }}</td>
-                    <td>{{ tx.description }}</td>
+                    <td>
+                        <div class="desc-main">{{ tx.description }}</div>
+                        <div class="row-meta">
+                            {% if tx.exact_match_count %}
+                                <span class="meta-chip">= {{ tx.exact_match_count }} enakih</span>
+                            {% endif %}
+                            {% if tx.similar_count %}
+                                <span class="meta-chip">~ {{ tx.similar_count }} podobnih</span>
+                            {% endif %}
+                        </div>
+                    </td>
                     {% if tx.amount >= 0 %}
                         <td class="amount-pos">{{ "%.2f"|format(tx.amount) }}</td>
                     {% else %}
                         <td class="amount-neg">{{ "%.2f"|format(tx.amount) }}</td>
                     {% endif %}
                     <td>{{ "%.2f"|format(tx.balance or 0) }}</td>
-                    <td>{{ tx.category_name or "Unassigned" }}</td>
+                    <td>
+                        {% if tx.category_name %}
+                            <span class="category-chip">{{ tx.category_name }}</span>
+                        {% else %}
+                            <span class="category-chip category-chip--empty">Unassigned</span>
+                        {% endif %}
+                        {% if tx.suggested_category_name %}
+                            <div class="suggested-pill">Predlog: {{ tx.suggested_category_name }}</div>
+                        {% endif %}
+                    </td>
                     <td>
                         <form method="post" class="category-form">
                             <input type="hidden" name="transaction_id" value="{{ tx.id }}">
                             <input type="hidden" name="filter_year" value="{{ selected_year }}">
                             <input type="hidden" name="filter_month" value="{{ selected_month }}">
+                            <input type="hidden" name="unassigned_only" value="{{ unassigned_only }}">
                             <select name="category_id">
                                 <option value="">-- None --</option>
                                 {% for cat in categories %}
-                                    <option value="{{ cat['id'] }}" {% if tx.category_id == cat['id'] %}selected{% endif %}>
+                                    {% set preselect = tx.category_id or tx.suggested_category_id %}
+                                    <option value="{{ cat['id'] }}" {% if preselect == cat['id'] %}selected{% endif %}>
                                         {{ cat['name'] }}
                                     </option>
                                 {% endfor %}
                             </select>
+                            <label class="checkbox-pill">
+                                <input type="checkbox" name="apply_all" value="1">
+                                <span>Enaki opisi{% if tx.exact_match_count %} ({{ tx.exact_match_count }}x){% endif %}</span>
+                            </label>
+                            <label class="checkbox-pill">
+                                <input type="checkbox" name="apply_similar" value="1">
+                                <span>Podobni opisi{% if tx.similar_count %} ({{ tx.similar_count }}x){% endif %}</span>
+                            </label>
                             <button type="submit">Save</button>
                         </form>
                     </td>

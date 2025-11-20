@@ -1,7 +1,8 @@
 from flask import Flask, render_template, redirect, request, url_for
 import sqlite3
 import os
-from collections import defaultdict
+import re
+from collections import defaultdict, Counter
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "finance.db")
@@ -60,6 +61,74 @@ def get_category_db_connection():
     conn = sqlite3.connect(CATEGORY_DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+def normalize_description(text: str) -> str:
+    """
+    Normalizes a transaction description so similar-looking rows
+    (different casing, punctuation or numbers) can be grouped together.
+    """
+    if not text:
+        return ""
+    cleaned = re.sub(r"[\W_]+", " ", text)
+    cleaned = re.sub(r"\d+", " ", cleaned)
+    cleaned = re.sub(r"\s+", " ", cleaned.lower()).strip()
+    return cleaned
+
+
+def apply_suggested_categories(finance_conn):
+    """
+    Applies categories to uncategorized transactions when we can infer a
+    match from other transactions with the same normalized description.
+    """
+    cat_conn = get_category_db_connection()
+    assignment_rows = cat_conn.execute(
+        """
+        SELECT transaction_id, category_id
+        FROM transaction_categories
+        """
+    ).fetchall()
+    assigned_map = {row["transaction_id"]: row["category_id"] for row in assignment_rows}
+
+    all_rows = finance_conn.execute(
+        "SELECT TransactionID, Description FROM transactions"
+    ).fetchall()
+
+    normalized_votes = defaultdict(lambda: defaultdict(int))
+    for row in all_rows:
+        norm_key = normalize_description(row["Description"])
+        assigned_id = assigned_map.get(row["TransactionID"])
+        if assigned_id and norm_key:
+            normalized_votes[norm_key][assigned_id] += 1
+
+    updates = []
+    for row in all_rows:
+        tx_id = row["TransactionID"]
+        if tx_id in assigned_map:
+            continue
+        norm_key = normalize_description(row["Description"])
+        votes = normalized_votes.get(norm_key)
+        if votes:
+            category_id = max(votes.items(), key=lambda item: (item[1], -item[0]))[0]
+            updates.append((tx_id, category_id))
+
+    if updates:
+        cat_conn.executemany(
+            """
+            INSERT INTO transaction_categories (
+                transaction_id,
+                category_id,
+                assigned_at
+            )
+            VALUES (?, ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(transaction_id) DO UPDATE SET
+                category_id = excluded.category_id,
+                assigned_at = CURRENT_TIMESTAMP
+            """,
+            updates,
+        )
+        cat_conn.commit()
+    cat_conn.close()
 
 
 init_category_db()
@@ -227,8 +296,17 @@ def dashboard():
 @app.route("/transactions", methods=["GET", "POST"])
 def transactions_view():
     finance_conn = get_db_connection()
+    # Attach category DB so we can filter/query against assignments.
+    finance_conn.execute("ATTACH DATABASE ? AS categories_db", (CATEGORY_DB_PATH,))
+
+    def read_unassigned(source, default_value="1"):
+        values = source.getlist("unassigned_only")
+        choice = values[-1].strip() if values else default_value
+        return choice if choice in ("0", "1") else default_value
+
     selected_year = request.args.get("year", "").strip()
     selected_month = request.args.get("month", "").strip()
+    unassigned_only = read_unassigned(request.args, "1")
 
     if request.method == "POST":
         tx_id = request.form.get("transaction_id")
@@ -238,11 +316,25 @@ def transactions_view():
         description_keyword = (request.form.get("description_keyword") or "").strip()
         bulk_action = request.form.get("bulk_action")
         apply_all = request.form.get("apply_all") == "1"
+        apply_similar = request.form.get("apply_similar") == "1"
+        unassigned_only = read_unassigned(request.form, unassigned_only)
 
         if filter_year:
             selected_year = filter_year
         if filter_month:
             selected_month = filter_month
+
+        if bulk_action == "apply_suggestions":
+            apply_suggested_categories(finance_conn)
+            query_params = {}
+            if selected_year:
+                query_params["year"] = selected_year
+            if selected_month:
+                query_params["month"] = selected_month
+            if unassigned_only:
+                query_params["unassigned_only"] = unassigned_only
+            finance_conn.close()
+            return redirect(url_for("transactions_view", **query_params))
 
         target_ids: list[str] = []
 
@@ -257,19 +349,34 @@ def transactions_view():
             ).fetchall()
             target_ids = [row["TransactionID"] for row in matched_rows]
         elif tx_id:
-            if apply_all:
-                base_desc_row = finance_conn.execute(
-                    "SELECT Description FROM transactions WHERE TransactionID = ?",
-                    (tx_id,),
-                ).fetchone()
-                if base_desc_row and base_desc_row["Description"]:
-                    same_rows = finance_conn.execute(
-                        "SELECT TransactionID FROM transactions WHERE Description = ?",
-                        (base_desc_row["Description"],),
+            target_set = set()
+            base_desc_row = finance_conn.execute(
+                "SELECT Description FROM transactions WHERE TransactionID = ?",
+                (tx_id,),
+            ).fetchone()
+            base_description = base_desc_row["Description"] if base_desc_row else ""
+
+            if apply_all and base_description:
+                same_rows = finance_conn.execute(
+                    "SELECT TransactionID FROM transactions WHERE Description = ?",
+                    (base_description,),
+                ).fetchall()
+                target_set.update(row["TransactionID"] for row in same_rows)
+
+            if apply_similar and base_description:
+                normalized = normalize_description(base_description)
+                if normalized:
+                    all_rows = finance_conn.execute(
+                        "SELECT TransactionID, Description FROM transactions"
                     ).fetchall()
-                    target_ids = [row["TransactionID"] for row in same_rows]
-            if not target_ids:
-                target_ids = [tx_id]
+                    for row in all_rows:
+                        if normalize_description(row["Description"]) == normalized:
+                            target_set.add(row["TransactionID"])
+
+            if not target_set and tx_id:
+                target_set.add(tx_id)
+
+            target_ids = list(target_set)
 
         if target_ids:
             conn = get_category_db_connection()
@@ -302,6 +409,8 @@ def transactions_view():
             query_params["year"] = selected_year
         if selected_month:
             query_params["month"] = selected_month
+        if unassigned_only:
+            query_params["unassigned_only"] = unassigned_only
         finance_conn.close()
         return redirect(url_for("transactions_view", **query_params))
 
@@ -323,6 +432,14 @@ def transactions_view():
             params.append(int(selected_month))
         except ValueError:
             selected_month = ""
+    if unassigned_only == "1":
+        filters.append(
+            """
+            TransactionID NOT IN (
+                SELECT transaction_id FROM categories_db.transaction_categories
+            )
+            """
+        )
     if filters:
         base_query += " WHERE " + " AND ".join(filters)
     base_query += " ORDER BY DateISO DESC, TransactionID DESC"
@@ -344,6 +461,10 @@ def transactions_view():
             "SELECT DISTINCT Month FROM transactions ORDER BY Month"
         ).fetchall()
     ]
+    all_transactions_rows = finance_conn.execute(
+        "SELECT TransactionID, Description FROM transactions"
+    ).fetchall()
+    finance_conn.execute("DETACH DATABASE categories_db")
     finance_conn.close()
 
     cat_conn = get_category_db_connection()
@@ -363,6 +484,63 @@ def transactions_view():
         row["transaction_id"]: {"id": row["category_id"], "name": row["category_name"]}
         for row in assignment_rows
     }
+    category_lookup = {row["id"]: row["name"] for row in categories}
+
+    normalized_votes = defaultdict(lambda: defaultdict(int))
+    normalized_to_ids = defaultdict(list)
+    exact_to_ids = defaultdict(list)
+    token_counter = Counter()
+    normalized_examples = {}
+    for tx in all_transactions_rows:
+        norm_key = normalize_description(tx["Description"])
+        if norm_key:
+            normalized_to_ids[norm_key].append(tx["TransactionID"])
+            normalized_examples.setdefault(norm_key, tx["Description"] or "")
+            for token in norm_key.split():
+                if len(token) >= 3:
+                    token_counter[token] += 1
+        exact_to_ids[tx["Description"] or ""].append(tx["TransactionID"])
+        assigned = assignments.get(tx["TransactionID"])
+        if assigned and assigned["id"] and norm_key:
+            normalized_votes[norm_key][assigned["id"]] += 1
+
+    keyword_options = []
+    for token, count in token_counter.most_common(30):
+        if count < 2:
+            continue
+        keyword_options.append({"value": token, "label": f"{token} ({count}x)"})
+
+    for norm_key, ids in sorted(
+        normalized_to_ids.items(), key=lambda item: len(item[1]), reverse=True
+    ):
+        if len(keyword_options) >= 50:
+            break
+        if len(ids) < 2:
+            continue
+        sample = normalized_examples.get(norm_key) or norm_key
+        keyword_options.append(
+            {"value": sample, "label": f"{sample} ({len(ids)}x podobno)"}
+        )
+
+    suggestions = {}
+    for tx in all_transactions_rows:
+        tx_id = tx["TransactionID"]
+        if tx_id in assignments:
+            continue
+        norm_key = normalize_description(tx["Description"])
+        votes = normalized_votes.get(norm_key)
+        if votes:
+            suggested_id = max(votes.items(), key=lambda item: (item[1], -item[0]))[0]
+            suggestions[tx_id] = {
+                "category_id": suggested_id,
+                "category_name": category_lookup.get(suggested_id),
+                "similar_count": max(len(normalized_to_ids.get(norm_key, [])) - 1, 0),
+            }
+
+    suggested_total = len(suggestions)
+    suggested_in_view = sum(
+        1 for tx in transactions_rows if tx["TransactionID"] in suggestions
+    )
 
     transactions = []
     total_income = 0.0
@@ -374,6 +552,10 @@ def transactions_view():
         else:
             total_expense += abs(amount)
         assigned = assignments.get(row["TransactionID"])
+        norm_key = normalize_description(row["Description"])
+        similar_count = max(len(normalized_to_ids.get(norm_key, [])) - 1, 0) if norm_key else 0
+        exact_match_count = max(len(exact_to_ids.get(row["Description"] or "", [])) - 1, 0)
+        suggested = suggestions.get(row["TransactionID"])
         transactions.append(
             {
                 "id": row["TransactionID"],
@@ -385,6 +567,10 @@ def transactions_view():
                 "month": row["Month"],
                 "category_id": assigned["id"] if assigned else None,
                 "category_name": assigned["name"] if assigned else None,
+                "suggested_category_id": suggested["category_id"] if suggested else None,
+                "suggested_category_name": suggested["category_name"] if suggested else None,
+                "similar_count": similar_count,
+                "exact_match_count": exact_match_count,
             }
         )
 
@@ -398,6 +584,10 @@ def transactions_view():
         selected_month=selected_month,
         total_income=total_income,
         total_expense=total_expense,
+        suggested_total=suggested_total,
+        suggested_in_view=suggested_in_view,
+        unassigned_only=unassigned_only,
+        keyword_options=keyword_options,
     )
 
 

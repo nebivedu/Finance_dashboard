@@ -8,10 +8,102 @@
         * {
             box-sizing: border-box;
         }
+        :root {
+            --body-bg: #fffef7;
+            --text-color: #12131c;
+            --border-color: #141c2f;
+            --card-bg: #ffffff;
+            --nav-bg: #fffef7;
+            --nav-link-bg: #ffffff;
+            --nav-link-color: #141c2f;
+            --nav-link-active-bg: #141c2f;
+            --nav-link-active-color: #fffef7;
+            --nav-link-hover-bg: #e6ecff;
+            --button-bg: #dbe3ff;
+            --button-hover-bg: #c3d2ff;
+            --muted-surface: #f7f8fb;
+            --table-head-bg: #141c2f;
+            --table-head-color: #fffef7;
+            --grid-line-color: #c5ccd9;
+            --toggle-bg: #ffffff;
+            --toggle-color: #141c2f;
+            --toggle-hover-bg: #e6ecff;
+            --card-shadow: rgba(4, 11, 38, 0.08);
+            --link-color: #0b3173;
+            --summary-income-bg: #cfe8d3;
+            --summary-income-color: #183a28;
+            --summary-expense-bg: #ffd6da;
+            --summary-expense-color: #5a2024;
+            --summary-net-bg: #d9e7ff;
+            --summary-net-color: #142241;
+            --summary-count-bg: #fff0c8;
+            --summary-count-color: #453009;
+            --summary-uncat-bg: #f9dbc0;
+            --summary-uncat-color: #4f2604;
+            --badge-bg: #b86f1f;
+            --badge-color: #fffef7;
+            --amount-pos-bg: #cfe8d3;
+            --amount-pos-color: #1b4a33;
+            --amount-neg-bg: #ffd6da;
+            --amount-neg-color: #64232a;
+            --input-bg: #ffffff;
+            --input-border: #141c2f;
+            --chart-income-line: #2d5f3f;
+            --chart-income-fill: rgba(200, 230, 201, 0.5);
+            --chart-expense-line: #7f2c2c;
+            --chart-expense-fill: rgba(255, 205, 210, 0.5);
+            --icon-sun: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%208%208'%20shape-rendering%3D'crispEdges'%3E%3Crect%20width%3D'8'%20height%3D'8'%20fill%3D'none'%2F%3E%3Crect%20x%3D'3'%20y%3D'0'%20width%3D'2'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'2'%20y%3D'1'%20width%3D'4'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'1'%20y%3D'2'%20width%3D'6'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'1'%20y%3D'3'%20width%3D'6'%20height%3D'2'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'1'%20y%3D'5'%20width%3D'6'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'2'%20y%3D'6'%20width%3D'4'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'3'%20y%3D'7'%20width%3D'2'%20height%3D'1'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'0'%20y%3D'3'%20width%3D'1'%20height%3D'2'%20fill%3D'%23f9e784'%2F%3E%3Crect%20x%3D'7'%20y%3D'3'%20width%3D'1'%20height%3D'2'%20fill%3D'%23f9e784'%2F%3E%3C%2Fsvg%3E");
+            --icon-moon: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2010%2010'%20shape-rendering%3D'crispEdges'%3E%3Crect%20width%3D'10'%20height%3D'10'%20fill%3D'none'%2F%3E%3Crect%20x%3D'1'%20y%3D'1'%20width%3D'6'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'1'%20y%3D'2'%20width%3D'7'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'1'%20y%3D'3'%20width%3D'7'%20height%3D'2'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'1'%20y%3D'5'%20width%3D'7'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'2'%20y%3D'6'%20width%3D'6'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'3'%20y%3D'7'%20width%3D'5'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'4'%20y%3D'8'%20width%3D'3'%20height%3D'1'%20fill%3D'%23dcdcff'%2F%3E%3Crect%20x%3D'2'%20y%3D'3'%20width%3D'2'%20height%3D'1'%20fill%3D'%23c4c8e8'%2F%3E%3Crect%20x%3D'3'%20y%3D'5'%20width%3D'2'%20height%3D'1'%20fill%3D'%23c4c8e8'%2F%3E%3Crect%20x%3D'4'%20y%3D'2'%20width%3D'1'%20height%3D'1'%20fill%3D'%23c4c8e8'%2F%3E%3Crect%20x%3D'5'%20y%3D'1'%20width%3D'4'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'6'%20y%3D'2'%20width%3D'3'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'7'%20y%3D'3'%20width%3D'2'%20height%3D'3'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'6'%20y%3D'6'%20width%3D'3'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'5'%20y%3D'7'%20width%3D'4'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3Crect%20x%3D'4'%20y%3D'8'%20width%3D'4'%20height%3D'1'%20fill%3D'%23090b11'%2F%3E%3C%2Fsvg%3E");
+        }
+        body.dark-mode {
+            --body-bg: #04070f;
+            --text-color: #f7f6ef;
+            --border-color: #f1ecda;
+            --card-bg: #101726;
+            --nav-bg: #07090f;
+            --nav-link-bg: #0d1118;
+            --nav-link-color: #f7f6ef;
+            --nav-link-active-bg: #f7f6ef;
+            --nav-link-active-color: #11131f;
+            --nav-link-hover-bg: #1a1f2b;
+            --button-bg: #1e3973;
+            --button-hover-bg: #2a4da0;
+            --muted-surface: #0d1424;
+            --table-head-bg: #f7f6ef;
+            --table-head-color: #07090f;
+            --grid-line-color: #3d4a67;
+            --toggle-bg: #0d1118;
+            --toggle-color: #f7f6ef;
+            --toggle-hover-bg: #232a3a;
+            --card-shadow: rgba(0, 0, 0, 0.65);
+            --link-color: #9cc4ff;
+            --summary-income-bg: #0f2a20;
+            --summary-income-color: #b4f7c6;
+            --summary-expense-bg: #3b151b;
+            --summary-expense-color: #ffb4bd;
+            --summary-net-bg: #132040;
+            --summary-net-color: #d5e4ff;
+            --summary-count-bg: #382c0b;
+            --summary-count-color: #ffe6a7;
+            --summary-uncat-bg: #3a2313;
+            --summary-uncat-color: #f6c190;
+            --badge-bg: #f0b562;
+            --badge-color: #402406;
+            --amount-pos-bg: #0f2a20;
+            --amount-pos-color: #b4f7c6;
+            --amount-neg-bg: #3b151b;
+            --amount-neg-color: #ffb4bd;
+            --input-bg: #0c1322;
+            --input-border: #f1ecda;
+            --chart-income-line: #6ce3a5;
+            --chart-income-fill: rgba(72, 157, 118, 0.45);
+            --chart-expense-line: #ff8da1;
+            --chart-expense-fill: rgba(189, 58, 87, 0.35);
+        }
         body {
             font-family: 'Courier New', Courier, monospace;
-            background: #fffef7;
-            color: #000;
+            background: var(--body-bg);
+            color: var(--text-color);
             margin: 0;
             padding: 30px 20px 40px;
             line-height: 1.4;
@@ -35,10 +127,14 @@
             margin: 0 auto;
         }
         .card {
-            background: #fff;
-            border: 5px solid #000;
+            background: var(--card-bg);
+            border: 5px solid var(--border-color);
             padding: 25px;
             margin-bottom: 25px;
+            color: inherit;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px var(--card-shadow);
+            transition: background-color 0.25s ease, border-color 0.25s ease;
         }
         .main-nav {
             position: sticky;
@@ -46,30 +142,100 @@
             z-index: 100;
             display: flex;
             flex-wrap: wrap;
+            align-items: stretch;
             gap: 0;
-            border: 5px solid #000;
+            border: 5px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
             margin-bottom: 35px;
-            background: #fffef7;
+            background: var(--nav-bg);
+            box-shadow: 0 12px 28px var(--card-shadow);
         }
         .main-nav a {
             text-decoration: none;
             padding: 15px 20px;
-            background: #fff;
-            border-right: 5px solid #000;
-            color: #000;
+            background: var(--nav-link-bg);
+            border-right: 5px solid var(--border-color);
+            color: var(--nav-link-color);
             font-size: 16px;
             font-weight: 900;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
-        .main-nav a:last-child {
+        .main-nav a:last-of-type {
             border-right: none;
         }
         .main-nav a.active {
-            background: #000;
-            color: #fff;
+            background: var(--nav-link-active-bg);
+            color: var(--nav-link-active-color);
         }
         .main-nav a:hover {
-            background: #e1bee7;
+            background: var(--nav-link-hover-bg);
+            color: var(--nav-link-color);
+        }
+        .main-nav a.active:hover {
+            background: var(--nav-link-active-bg);
+            color: var(--nav-link-active-color);
+        }
+        .main-nav .theme-toggle {
+            margin-left: auto;
+            border: none;
+            border-left: 5px solid var(--border-color);
+            background: var(--toggle-bg);
+            color: var(--toggle-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 58px;
+            min-width: 58px;
+            aspect-ratio: 1 / 1;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: background-color 0.2s ease;
+        }
+        .main-nav .theme-toggle:hover {
+            background: var(--toggle-hover-bg);
+        }
+        .main-nav .theme-toggle:focus-visible {
+            outline: 3px dashed var(--nav-link-active-color);
+            outline-offset: -6px;
+        }
+        .theme-toggle .icon {
+            font-size: 0;
+            line-height: 1;
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle .icon::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background-size: cover;
+            image-rendering: pixelated;
+            display: block;
+        }
+        .theme-toggle .icon-sun::before {
+            background-image: var(--icon-sun);
+        }
+        .theme-toggle .icon-moon::before {
+            background-image: var(--icon-moon);
+        }
+        .theme-toggle .icon-moon {
+            display: none;
+        }
+        body.dark-mode .theme-toggle .icon-sun {
+            display: none;
+        }
+        body.dark-mode .theme-toggle .icon-moon {
+            display: inline;
         }
         .summary-grid {
             display: grid;
@@ -77,11 +243,14 @@
             gap: 18px;
         }
         .summary-item {
-            border: 3px solid #000;
+            border: 3px solid var(--border-color);
             padding: 18px;
             text-transform: uppercase;
             font-weight: 900;
             border-radius: 8px;
+            color: var(--text-color);
+            background: var(--muted-surface);
+            box-shadow: 0 6px 20px var(--card-shadow);
         }
         .summary-item span {
             display: block;
@@ -109,18 +278,33 @@
         }
         .summary-item .badge {
             padding: 2px 10px;
-            border: 3px solid #000;
+            border: 3px solid var(--border-color);
             font-size: 10px;
             font-weight: 900;
-            background: #b86f1f;
-            color: #fffef7;
+            background: var(--badge-bg);
+            color: var(--badge-color);
             border-radius: 6px;
         }
-        .summary-income { background: #c8e6c9; }
-        .summary-expense { background: #ffcdd2; }
-        .summary-net { background: #bbdefb; }
-        .summary-count { background: #fff4c3; }
-        .summary-uncat { background: #f7d8ae; }
+        .summary-income {
+            background: var(--summary-income-bg);
+            color: var(--summary-income-color);
+        }
+        .summary-expense {
+            background: var(--summary-expense-bg);
+            color: var(--summary-expense-color);
+        }
+        .summary-net {
+            background: var(--summary-net-bg);
+            color: var(--summary-net-color);
+        }
+        .summary-count {
+            background: var(--summary-count-bg);
+            color: var(--summary-count-color);
+        }
+        .summary-uncat {
+            background: var(--summary-uncat-bg);
+            color: var(--summary-uncat-color);
+        }
         .flex {
             display: flex;
             gap: 25px;
@@ -137,19 +321,29 @@
         }
         th, td {
             padding: 10px 12px;
-            border: 3px solid #000;
+            border: 3px solid var(--border-color);
             text-align: left;
             word-break: break-word;
+            color: inherit;
+            background: var(--card-bg);
+            transition: background-color 0.2s ease;
         }
         th {
-            background: #000;
-            color: #fff;
+            background: var(--table-head-bg);
+            color: var(--table-head-color);
             font-weight: 900;
             text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        tbody tr:nth-child(even) td {
+            background: var(--muted-surface);
+        }
+        tbody tr:hover td {
+            background: var(--toggle-hover-bg);
         }
         .amount-pos {
-            color: #2d5f3f;
-            background: #c8e6c9;
+            color: var(--amount-pos-color);
+            background: var(--amount-pos-bg);
             padding: 2px 6px;
             font-weight: 900;
         }
@@ -157,15 +351,17 @@
             content: '+';
         }
         .amount-neg {
-            color: #7f2c2c;
-            background: #ffcdd2;
+            color: var(--amount-neg-color);
+            background: var(--amount-neg-bg);
             padding: 2px 6px;
             font-weight: 900;
         }
         canvas {
             width: 100%;
-            border: 3px solid #000;
-            background: #fafafa;
+            border: 3px solid var(--border-color);
+            background: var(--muted-surface);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--card-shadow);
         }
         .month-accordion {
             display: flex;
@@ -174,9 +370,10 @@
             margin-top: 10px;
         }
         .month-panel {
-            border: 3px solid #000;
+            border: 3px solid var(--border-color);
             border-radius: 12px;
-            background: #fff;
+            background: var(--card-bg);
+            box-shadow: 0 8px 30px var(--card-shadow);
         }
         .month-panel summary {
             cursor: pointer;
@@ -188,6 +385,9 @@
             gap: 20px;
             font-weight: 900;
             text-transform: uppercase;
+            color: var(--text-color);
+            background: var(--card-bg);
+            border-bottom: 3px solid var(--border-color);
         }
         .month-panel summary::-webkit-details-marker {
             display: none;
@@ -204,14 +404,15 @@
             min-width: 120px;
             display: inline-block;
         }
-        .month-income { color: #2d5f3f; }
-        .month-expense { color: #7f2c2c; }
-        .month-net { color: #000; }
+        .month-income { color: var(--amount-pos-color); }
+        .month-expense { color: var(--amount-neg-color); }
+        .month-net { color: var(--summary-net-color); }
         .month-details {
             padding: 0 20px 20px;
+            background: var(--muted-surface);
         }
         .month-table th, .month-table td {
-            border-color: #000;
+            border-color: var(--border-color);
         }
         .month-table td:nth-child(1),
         .month-table td:nth-child(3),
@@ -227,6 +428,9 @@
             margin: 10px 0;
             font-weight: 900;
             text-transform: uppercase;
+            color: var(--text-color);
+            letter-spacing: 1px;
+            opacity: 0.85;
         }
     </style>
 </head>
@@ -373,9 +577,81 @@
     } = parsedData;
 
     const monthlyCanvas = document.getElementById('monthlyChart');
+    const pieCharts = [];
+    let monthlyChartInstance = null;
+
+    function getThemeColors() {
+        const styles = getComputedStyle(document.body);
+        const getValue = (prop, fallback) => {
+            const value = (styles.getPropertyValue(prop) || '').trim();
+            return value || fallback;
+        };
+        return {
+            text: getValue('--text-color', '#000'),
+            grid: getValue('--grid-line-color', '#ccc'),
+            incomeLine: getValue('--chart-income-line', '#2d5f3f'),
+            incomeFill: getValue('--chart-income-fill', 'rgba(200, 230, 201, 0.5)'),
+            expenseLine: getValue('--chart-expense-line', '#7f2c2c'),
+            expenseFill: getValue('--chart-expense-fill', 'rgba(255, 205, 210, 0.5)')
+        };
+    }
+
+    function refreshChartColors() {
+        const colors = getThemeColors();
+        if (monthlyChartInstance) {
+            const chartOptions = monthlyChartInstance.options || {};
+            const plugins = chartOptions.plugins || {};
+            const legend = plugins.legend || {};
+            const legendLabels = legend.labels;
+            if (legendLabels) {
+                legendLabels.color = colors.text;
+            }
+            const scales = chartOptions.scales || {};
+            const xScale = scales.x || {};
+            const yScale = scales.y || {};
+            if (xScale.ticks) {
+                xScale.ticks.color = colors.text;
+            }
+            if (yScale.ticks) {
+                yScale.ticks.color = colors.text;
+            }
+            if (xScale.grid) {
+                xScale.grid.color = colors.grid;
+            }
+            if (yScale.grid) {
+                yScale.grid.color = colors.grid;
+            }
+            const datasets = (monthlyChartInstance.data && monthlyChartInstance.data.datasets) || [];
+            if (datasets[0]) {
+                datasets[0].borderColor = colors.incomeLine;
+                datasets[0].backgroundColor = colors.incomeFill;
+            }
+            if (datasets[1]) {
+                datasets[1].borderColor = colors.expenseLine;
+                datasets[1].backgroundColor = colors.expenseFill;
+            }
+            monthlyChartInstance.update('none');
+        }
+        pieCharts.forEach((chart) => {
+            const options = chart.options || {};
+            const plugins = options.plugins || {};
+            const legend = plugins.legend || {};
+            const legendLabels = legend.labels;
+            if (legendLabels) {
+                legendLabels.color = colors.text;
+            }
+            const datasets = (chart.data && chart.data.datasets) || [];
+            datasets.forEach((dataset) => {
+                dataset.borderColor = colors.text;
+            });
+            chart.update('none');
+        });
+    }
+
     if (monthlyCanvas && window.Chart) {
         const ctx = monthlyCanvas.getContext('2d');
-        new Chart(ctx, {
+        const themeColors = getThemeColors();
+        monthlyChartInstance = new Chart(ctx, {
             type: 'line',
             data: {
                 labels,
@@ -383,8 +659,8 @@
                     {
                         label: 'Income',
                         data: incomeData,
-                        borderColor: '#2d5f3f',
-                        backgroundColor: 'rgba(200, 230, 201, 0.5)',
+                        borderColor: themeColors.incomeLine,
+                        backgroundColor: themeColors.incomeFill,
                         borderWidth: 4,
                         tension: 0,
                         fill: true
@@ -392,8 +668,8 @@
                     {
                         label: 'Expenses',
                         data: expenseData,
-                        borderColor: '#7f2c2c',
-                        backgroundColor: 'rgba(255, 205, 210, 0.5)',
+                        borderColor: themeColors.expenseLine,
+                        backgroundColor: themeColors.expenseFill,
                         borderWidth: 4,
                         tension: 0,
                         fill: true
@@ -405,41 +681,42 @@
                 plugins: {
                     legend: {
                         labels: {
-                            color: '#000',
+                            color: themeColors.text,
                             font: { family: "'Courier New', monospace", weight: 'bold' }
                         }
                     }
                 },
                 scales: {
                     x: {
-                        ticks: { color: '#000', font: { family: "'Courier New', monospace" } },
-                        grid: { color: '#ccc', lineWidth: 2 }
+                        ticks: { color: themeColors.text, font: { family: "'Courier New', monospace" } },
+                        grid: { color: themeColors.grid, lineWidth: 2 }
                     },
                     y: {
-                        ticks: { color: '#000', font: { family: "'Courier New', monospace" } },
-                        grid: { color: '#ccc', lineWidth: 2 }
+                        ticks: { color: themeColors.text, font: { family: "'Courier New', monospace" } },
+                        grid: { color: themeColors.grid, lineWidth: 2 }
                     }
                 }
             }
         });
     }
 
-    function renderPie(canvasId, labels, data) {
+    function renderPie(canvasId, chartLabels, chartData) {
         const canvas = document.getElementById(canvasId);
-        if (!canvas || !window.Chart || labels.length === 0) return;
+        if (!canvas || !window.Chart || chartLabels.length === 0) return null;
         const ctx = canvas.getContext('2d');
-        new Chart(ctx, {
+        const themeColors = getThemeColors();
+        const chart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels,
+                labels: chartLabels,
                 datasets: [{
-                    data,
+                    data: chartData,
                     backgroundColor: [
                         '#ffcdd2', '#f8bbd0', '#e1bee7', '#d1c4e9',
                         '#c5cae9', '#bbdefb', '#b3e5fc', '#b2ebf2',
                         '#b2dfdb', '#c8e6c9', '#dcedc8', '#f0f4c3'
                     ],
-                    borderColor: '#000',
+                    borderColor: themeColors.text,
                     borderWidth: 3
                 }]
             },
@@ -449,7 +726,7 @@
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: '#000',
+                            color: themeColors.text,
                             font: { family: "'Courier New', monospace", weight: 'bold' },
                             padding: 15
                         }
@@ -457,10 +734,13 @@
                 }
             }
         });
+        pieCharts.push(chart);
+        return chart;
     }
 
     renderPie('spendingPieChart', spendingCategories, spendingAmounts);
     renderPie('incomePieChart', incomeCategories, incomeAmounts);
+    window.addEventListener('themechange', refreshChartColors);
 </script>
 </body>
 </html>
